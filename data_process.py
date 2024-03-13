@@ -8,7 +8,7 @@ from nuplan.planning.utils.multithreading.worker_parallel import SingleMachinePa
 from nuplan.planning.scenario_builder.scenario_filter import ScenarioFilter
 from nuplan.planning.scenario_builder.nuplan_db.nuplan_scenario_builder import NuPlanScenarioBuilder
 from nuplan.planning.scenario_builder.nuplan_db.nuplan_scenario_utils import ScenarioMapping
-
+from sklearn.model_selection import train_test_split
 
 # define data processor
 class DataProcessor(object):
@@ -26,6 +26,7 @@ class DataProcessor(object):
         self._max_points = {'LANE': 50, 'ROUTE_LANES': 50, 'CROSSWALK': 30} # maximum number of points per feature to extract per feature layer.
         self._radius = 60 # [m] query radius scope relative to the current pose.
         self._interpolation_method = 'linear' # Interpolation method to apply when interpolating to maintain fixed size map elements.
+        self._save_data = []    # 保存data字典
 
     def get_ego_agent(self):
         self.anchor_ego_state = self.scenario.initial_ego_state
@@ -127,6 +128,18 @@ class DataProcessor(object):
 
     def save_to_disk(self, dir, data):
         np.savez(f"{dir}/{data['map_name']}_{data['token']}.npz", **data)
+        
+    def save_data(self, save_dir):
+        os.makedirs(save_dir + 'train/', exist_ok=True)
+        os.makedirs(save_dir + 'valid/', exist_ok=True)
+
+        # split train_set and valid_test
+        train_set, valid_set = train_test_split(self._save_data, train_size=0.9)
+        for item in train_set:
+            self.save_to_disk(save_dir + 'train/', item)
+        for item in valid_set:
+            self.save_to_disk(save_dir + 'valid/', item)
+        print("save done!")
 
     def work(self, save_dir, debug=False):
         for scenario in tqdm(self._scenarios):
@@ -158,7 +171,15 @@ class DataProcessor(object):
                 self.plot_scenario(data)
 
             # save to disk
-            self.save_to_disk(save_dir, data)
+            # self.save_to_disk(save_dir, data)
+            
+            # save to data_list
+            self._save_data.append(data)
+        
+        # save to disk
+        self.save_data(save_dir)
+
+        
             
 
 if __name__ == "__main__":
