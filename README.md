@@ -63,7 +63,7 @@ python run_nuplan_test.py
 ### 1、相关文件
 ```shell
 # 数据处理
-
+xiaoba_rosbag_tonuplan_likenuplan.py
 
 # 模型训练
 train_predictor.py
@@ -77,15 +77,35 @@ run_nuboard.py
 
 ### 2、数据处理
 ```shell
-
+python xiaoba_rosbag_tonuplan_likenuplan.py
 ```
+
+> tips: 需要修改该文件内的rosbag、save_path、self._original_route_lane_data_x_path、self._shifit_route_lane_data_x_path，当然还有y轴的路径  
+> 处理好的训练集：/data/datasets/xiaoba/2024.1.11/2024-01-11-17-20-37_part2_with_det_2_train/train/   
+> 处理好的验证集：/data/datasets/xiaoba/2024.1.11/2024-01-11-17-20-37_part2_with_det_2_train/valid/
 
 ### 3、模型训练
 ```shell
-
+python train_predictor.py 
+--train_set /data/datasets/xiaoba/2024.1.11/2024-01-11-17-20-37_part2_with_det_2_train/train/  
+--valid_set /data/datasets/xiaoba/2024.1.11/2024-01-11-17-20-37_part2_with_det_2_train/valid/
 ```
+
+> tips: 就是每一轮的模型都保存了，后面有评价数值，选最小的就行  
+> 模型最终保存位置：./training_log/{experiment_name}/
 
 ### 4、测试
 ```shell
-
+python run_nuplan_test.py
+--experiment_name open_loop_boxes
+--data_path /data/dataset/nuplan/splits/mini
+--map_path /data/dataset/nuplan/maps
+--model_path training_log/your/model
 ```
+
+> tips: 测试时间很长，所以为了可视化之前的测试结果，我们编写了run_nuboard.py可以进去看看怎么改  
+> 测试结果保存位置：./testing_log/{experiment_name}/gameformer_planner/{experiment_time}
+
+### 5、可视化
+1. 可视化测试结果
+> python run_nuboard.py
