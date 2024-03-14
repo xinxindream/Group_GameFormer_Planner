@@ -280,6 +280,7 @@ class gameformer_planner:
                 data = convert_to_model_inputs(data, self._device)
 
                 with torch.no_grad():
+                    # 这里和后续修改模型的代码有区别，修改模型后，这里的输出是6个，现在是5个
                     plan, predictions, scores, ego_state_transformed, neighbors_state_transformed = self._planner._get_prediction(data)
 
                 smooth_plan = plan[0].cpu().numpy()
