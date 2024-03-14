@@ -95,6 +95,7 @@ python train_predictor.py
 > 模型最终保存位置：./training_log/{experiment_name}/
 
 ### 4、测试
+#### 4.1 GameFormerPlanner测试
 ```shell
 python run_nuplan_test.py
 --experiment_name open_loop_boxes
@@ -105,6 +106,22 @@ python run_nuplan_test.py
 
 > tips: 测试时间很长，所以为了可视化之前的测试结果，我们编写了run_nuboard.py可以进去看看怎么改  
 > 测试结果保存位置：./testing_log/{experiment_name}/gameformer_planner/{experiment_time}
+
+#### 4.2 Rviz可视化rosbag测试
+```shell
+# 先启动roscore
+roscore
+
+# 执行测试文件
+python xiaoba_rosbag_test-likenuplan.py  --model_path /home/user/workspace/pxf/GameFormer-Planner/training_log/Exp3_likenuplan/model_epoch_20_valADE_0.4715.pth
+
+# 测试进行，启动rviz
+rviz -d xiaoba_rosbag_test.rviz 
+```
+
+> tips: 一定要启动roscore再执行测试文件，不然会因为缺少依赖，测试运行失败  
+> rviz过早打开会没有画面的，不用担心  
+> 需要修改xiaoba_rosbag_test-likenuplan.py
 
 ### 5、可视化
 1. 可视化测试结果
