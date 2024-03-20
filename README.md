@@ -4,7 +4,14 @@
 2. 处理我们自己的数据符合GameFormer_Planner所需格式，跑通流程，所以不会修改模型代码
 
 ## 二、环境安装
-因为环境依赖什么的，不是我配置的，所以忽略这一过程
+1. 下载nuplan数据集
+2. 安装[nuPlan devkit](https://nuplan-devkit.readthedocs.io/en/latest/installation.html)(version tested: v1.2.2).
+3. 下载源码为nuplan虚拟空间安装必要依赖
+```shell
+conda activate nuplan
+
+pip install -r requirements.txt
+```
 
 ## 三、操作流程（GameFormer_Planner）
 ### 1、相关文件
