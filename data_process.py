@@ -130,15 +130,15 @@ class DataProcessor(object):
         np.savez(f"{dir}/{data['map_name']}_{data['token']}.npz", **data)
         
     def save_data(self, save_dir):
-        os.makedirs(save_dir + 'train/', exist_ok=True)
-        os.makedirs(save_dir + 'valid/', exist_ok=True)
+        os.makedirs(save_dir + '/train', exist_ok=True)
+        os.makedirs(save_dir + '/valid', exist_ok=True)
 
         # split train_set and valid_test
         train_set, valid_set = train_test_split(self._save_data, train_size=0.9)
         for item in train_set:
-            self.save_to_disk(save_dir + 'train/', item)
+            self.save_to_disk(save_dir + '/train', item)
         for item in valid_set:
-            self.save_to_disk(save_dir + 'valid/', item)
+            self.save_to_disk(save_dir + '/valid', item)
         print("save done!")
 
     def work(self, save_dir, debug=False):

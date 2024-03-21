@@ -32,19 +32,19 @@ run_nuboard.py
 ### 2、数据处理
 ```shell
 python data_process.py
---data_path /data/dataset/nuplan/splits/mini
---map_path /data/dataset/nuplan/maps
---save_path /data/dataset/nuplan/try_processed_data
+--data_path /data/datasets/nuplan/splits/mini
+--map_path /data/datasets/nuplan/maps
+--save_path /data/datasets/nuplan/processed_data
 ```
 
 > tips: 官方的data_process.py中是没有进行train_set和valid_set分割的，需要我们自己去分割，我这里在data_process中进行了处理  
-> 结果保存：/data/dataset/nuplan/try_processed_data/train /data/dataset/nuplan/try_processed_data/valid
+> 结果保存：/data/datasets/nuplan/processed_data/train /data/datasets/nuplan/processed_data/valid
 
 ### 3、模型训练
 ```shell
 python train_predictor.py 
---train_set /data/dataset/nuplan/try_processed_data/train 
---valid_set /data/dataset/nuplan/try_processed_data/valid
+--train_set /data/datasets/nuplan/processed_data/train 
+--valid_set /data/datasets/nuplan/processed_data/valid
 ```
 
 > tips: 就是每一轮的模型都保存了，后面有评价数值，选最小的就行  
@@ -54,8 +54,8 @@ python train_predictor.py
 ```shell
 python run_nuplan_test.py
 --experiment_name open_loop_boxes
---data_path /data/dataset/nuplan/splits/mini
---map_path /data/dataset/nuplan/maps
+--data_path /data/datasets/nuplan/splits/mini
+--map_path /data/datasets/nuplan/maps
 --model_path training_log/your/model
 ```
 
@@ -106,8 +106,8 @@ python train_predictor.py
 ```shell
 python run_nuplan_test.py
 --experiment_name open_loop_boxes
---data_path /data/dataset/nuplan/splits/mini
---map_path /data/dataset/nuplan/maps
+--data_path /data/datasets/nuplan/splits/mini
+--map_path /data/datasets/nuplan/maps
 --model_path training_log/your/model
 ```
 
